@@ -12,6 +12,7 @@ namespace LinkUpApp.Infraesctructure.Persistence.Contexts
         public DbSet<Post> Posts { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
         public DbSet<Reply> Replies { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

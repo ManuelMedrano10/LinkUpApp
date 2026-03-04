@@ -16,7 +16,10 @@ namespace LinkUpApp.Core.Application.Mappings.DtosAndViewModels
                 .ForMember(dest => dest.ImageUrl, opt => opt.Ignore())
                 .ForMember(dest => dest.VideoUrl, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.UserId, opt => opt.Ignore());
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.UserName, opt => opt.Ignore())
+                .ForMember(dest => dest.UserPhotoUrl, opt => opt.Ignore())
+                .ForMember(dest => dest.Comments, opt => opt.Ignore());
         }
     }
 }

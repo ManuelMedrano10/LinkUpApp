@@ -16,6 +16,9 @@ namespace LinkUpApp.Core.Application
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IFriendshipService, FrienshipService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IReplyService, ReplyService>();
             #endregion
         }
     }

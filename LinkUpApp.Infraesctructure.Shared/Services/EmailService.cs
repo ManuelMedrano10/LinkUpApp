@@ -43,7 +43,7 @@ namespace LinkUpApp.Infraesctructure.Shared.Services
                 email.Body = builder.ToMessageBody();
 
                 using MailKit.Net.Smtp.SmtpClient smtpClient = new();
-                await smtpClient.ConnectAsync(_mailSettings.SmtpHost, _mailSettings.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls); await smtpClient.ConnectAsync(_mailSettings.SmtpHost, _mailSettings.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
+                await smtpClient.ConnectAsync(_mailSettings.SmtpHost, _mailSettings.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
                 await smtpClient.AuthenticateAsync(_mailSettings.SmtpUser, _mailSettings.SmtpPass);
                 await smtpClient.SendAsync(email);
                 await smtpClient.DisconnectAsync(true);

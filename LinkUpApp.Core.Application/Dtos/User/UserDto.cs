@@ -10,6 +10,5 @@
         public string? Phone { get; set; }
         public required string ProfileImage { get; set; }
         public bool? IsVerified { get; set; }
-        public required string Role { get; set; }
     }
 }

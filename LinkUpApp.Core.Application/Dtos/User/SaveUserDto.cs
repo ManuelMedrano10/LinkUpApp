@@ -10,6 +10,5 @@
         public required string Password { get; set; }
         public string? Phone { get; set; }
         public required string ProfileImage { get; set; }
-        public required string Role { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace LinkUpApp.Core.Application.ViewModels.Comment
         [DataType(DataType.Text)]
         public required string Content { get; set; }
         public required int PostId { get; set; }
-        public required string UserId { get; set; }
+        public string? UserId { get; set; }
     }
 }

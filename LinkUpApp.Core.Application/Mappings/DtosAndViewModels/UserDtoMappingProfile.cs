@@ -18,6 +18,18 @@ namespace LinkUpApp.Core.Application.Mappings.DtosAndViewModels
 
             CreateMap<SaveUserDto, UpdateUserViewModel>()
                 .ForMember(dest => dest.ProfileImageUrl, opt => opt.MapFrom(src => src.ProfileImage));
+
+            CreateMap<SaveUserDto, RegisterUserViewModel>()
+                .ForMember(dest => dest.ProfileImageFile, opt => opt.MapFrom(src => src.ProfileImage))
+                .ReverseMap();
+
+            CreateMap<SaveUserDto, CreateUserViewModel>()
+                .ForMember(dest => dest.ProfileImageFile, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(dest => dest.ProfileImage, opt => opt.Ignore());
+
+            CreateMap<LoginDto, LoginViewModel>()
+                .ReverseMap();
         }
     }
 }

@@ -4351,7 +4351,8 @@
       this._element.style.display = 'block';
       this._element.removeAttribute('aria-hidden');
       this._element.setAttribute('aria-modal', true);
-      this._element.setAttribute('role', 'dialog');
+        this._element.setAttribute('
+      ', 'dialog');
       this._element.scrollTop = 0;
       const modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
       if (modalBody) {

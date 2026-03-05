@@ -53,7 +53,7 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 return response;
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName ?? "", loginDto.Pasword, false, true);
+            var result = await _signInManager.PasswordSignInAsync(user.UserName ?? "", loginDto.Password, false, true);
 
             if (!result.Succeeded)
             {
@@ -71,15 +71,12 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 return response;
             }
 
-            var rolesList = await _userManager.GetRolesAsync(user);
-
             response.Id = user.Id;
             response.Email = user.Email ?? "";
             response.Name = user.Name;
             response.LastName = user.LastName;
             response.UserName = user.UserName ?? "";
             response.IsVerified = user.EmailConfirmed;
-            response.Roles = rolesList.ToList();
 
             return response;
         }
@@ -132,7 +129,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
             var result = await _userManager.CreateAsync(user, saveUserDto.Password);
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, saveUserDto.Role);
                 string verificationUri = await GetVerificationUri(user, origin);
                 await _emailService.SendAsync(new EmailRequestDto
                 {
@@ -144,14 +140,12 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                     Subject = "Confirm Registration"
                 });
 
-                var rolesList = await _userManager.GetRolesAsync(user);
                 response.Id = user.Id;
                 response.Email = user.Email ?? "";
                 response.Name = user.Name;
                 response.LastName = user.LastName;
                 response.UserName = user.UserName ?? "";
                 response.IsVerified = user.EmailConfirmed;
-                response.Roles = rolesList.ToList();
 
                 return response;
             }
@@ -226,10 +220,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                var rolesList = await _userManager.GetRolesAsync(user);
-                await _userManager.RemoveFromRolesAsync(user, rolesList.ToList());
-                await _userManager.AddToRoleAsync(user, saveUserDto.Role);
-
                 if (!user.EmailConfirmed && isNotCreated)
                 {
                     string verificationUri = await GetResetPasswordUri(user, origin);
@@ -243,7 +233,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                         Subject = "Confirm Registration"
                     });
                 }
-                var updatedRolesList = await _userManager.GetRolesAsync(user);
 
                 response.Id = user.Id;
                 response.Email = user.Email ?? "";
@@ -251,7 +240,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 response.Name = user.Name;
                 response.LastName = user.LastName;
                 response.IsVerified = user.EmailConfirmed;
-                response.Roles = updatedRolesList.ToList();
 
                 return response;
             }
@@ -358,7 +346,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 return null;
             }
 
-            var rolesList = await _userManager.GetRolesAsync(user);
 
             var userDto = new UserDto()
             {
@@ -369,8 +356,7 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 UserName = user.UserName ?? "",
                 ProfileImage = user.ProfileImage,
                 Phone = user.PhoneNumber,
-                IsVerified = user.EmailConfirmed,
-                Role = rolesList.FirstOrDefault() ?? ""
+                IsVerified = user.EmailConfirmed
             };
 
             return userDto;
@@ -385,8 +371,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 return null;
             }
 
-            var rolesList = await _userManager.GetRolesAsync(user);
-
             var userDto = new UserDto()
             {
                 Id = user.Id,
@@ -396,8 +380,7 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 UserName = user.UserName ?? "",
                 ProfileImage = user.ProfileImage,
                 Phone = user.PhoneNumber,
-                IsVerified = user.EmailConfirmed,
-                Role = rolesList.FirstOrDefault() ?? ""
+                IsVerified = user.EmailConfirmed
             };
 
             return userDto;
@@ -412,8 +395,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 return null;
             }
 
-            var rolesList = await _userManager.GetRolesAsync(user);
-
             var userDto = new UserDto()
             {
                 Id = user.Id,
@@ -423,8 +404,7 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                 UserName = user.UserName ?? "",
                 ProfileImage = user.ProfileImage,
                 Phone = user.PhoneNumber,
-                IsVerified = user.EmailConfirmed,
-                Role = rolesList.FirstOrDefault() ?? ""
+                IsVerified = user.EmailConfirmed
             };
 
             return userDto;
@@ -445,7 +425,6 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
 
             foreach (var item in listUser)
             {
-                var roleList = await _userManager.GetRolesAsync(item);
 
                 listUserDtos.Add(new UserDto()
                 {
@@ -456,8 +435,7 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
                     UserName = item.UserName ?? "",
                     ProfileImage = item.ProfileImage,
                     Phone = item.PhoneNumber,
-                    IsVerified = item.EmailConfirmed,
-                    Role = roleList.FirstOrDefault() ?? ""
+                    IsVerified = item.EmailConfirmed
                 });
             }
 

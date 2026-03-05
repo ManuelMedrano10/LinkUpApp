@@ -17,7 +17,7 @@ namespace LinkUpApp.Infraesctructure.Persistence.Repositories
         public async Task<List<Post>> GetAllWithCommentsAsync()
         {
             return await _context.Set<Post>()
-                .Include(p => p.Comments ?? new List<Comment>())
+                .Include(p => p.Comments)
                     .ThenInclude(c => c.Replies)
                 .Include(p => p.Reactions)
                 .OrderByDescending(p => p.CreatedAt)

@@ -1,11 +1,13 @@
 ﻿namespace LinkUpApp.Core.Application.Interfaces
 {
-    public interface IGenericService<DtoModel> where DtoModel : class
+    public interface IGenericService<DtoModel, SaveDtoModel> 
+        where DtoModel : class
+        where SaveDtoModel : class
     {
-        Task<DtoModel?> AddAsync(DtoModel dto);
+        Task<SaveDtoModel?> AddAsync(SaveDtoModel dto);
         Task<bool> DeleteAsync(int id);
         Task<List<DtoModel>> GetAll();
         Task<DtoModel?> GetById(int id);
-        Task<DtoModel?> UpdateAsync(DtoModel dto, int id);
+        Task<SaveDtoModel?> UpdateAsync(SaveDtoModel dto, int id);
     }
 }

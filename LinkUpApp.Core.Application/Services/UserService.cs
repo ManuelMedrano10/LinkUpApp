@@ -33,34 +33,33 @@ namespace LinkUpApp.Core.Application.Services
             return viewModel;
         }
 
-        public async Task<EditResponseDto> UpdateProfileAsync(UpdateUserViewModel vm, string origin)
+        public async Task<EditResponseDto> UpdateProfileAsync(SaveUserDto saveDto, string origin)
         {
-            var currentUser = await _accountService.GetUserById(vm.Id);
+            var currentUser = await _accountService.GetUserById(saveDto.Id);
 
             if (currentUser == null)
             {
                 return new EditResponseDto 
-                { 
+                {
                     Id = "",
                     Name = "",
                     LastName = "",
                     Email = "",
                     UserName = "",
                     HasError = true, 
-                    Errors = ["User not founded."] };
+                    Errors = ["The user was not founded."] 
+                };
             }
 
-            var saveUserDto = _mapper.Map<SaveUserDto>(vm);
+            saveDto.UserName = currentUser.UserName;
+            saveDto.Email = currentUser.Email;
 
-            saveUserDto.UserName = currentUser.UserName;
-            saveUserDto.Email = currentUser.Email;
-
-            if (vm.ProfileImageFile == null && !string.IsNullOrEmpty(currentUser.ProfileImage))
+            if (string.IsNullOrEmpty(saveDto.ProfileImage) && !string.IsNullOrEmpty(currentUser.ProfileImage))
             {
-                saveUserDto.ProfileImage = currentUser.ProfileImage;
+                saveDto.ProfileImage = currentUser.ProfileImage;
             }
 
-            return await _accountService.EditUser(saveUserDto, origin, false);
+            return await _accountService.EditUser(saveDto, origin, false);
         }
     }
 }

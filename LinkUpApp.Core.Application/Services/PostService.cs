@@ -7,7 +7,7 @@ using LinkUpApp.Infraesctructure.Persistence.Repositories;
 
 namespace LinkUpApp.Core.Application.Services
 {
-    public class PostService : GenericService<Post, PostDto>, IPostService
+    public class PostService : GenericService<Post, PostDto, SavePostDto>, IPostService
     {
         private readonly IPostRepository _repository;
         private readonly IAccountServiceWebApp _accountService;

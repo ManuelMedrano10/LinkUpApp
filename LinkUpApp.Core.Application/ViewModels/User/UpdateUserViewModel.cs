@@ -36,5 +36,8 @@ namespace LinkUpApp.Core.Application.ViewModels.User
         [DataType(DataType.Upload)]
         [Required(ErrorMessage = "You must enter the profile image of the user.")]
         public IFormFile? ProfileImageFile { get; set; }
+        public string? ProfileImageUrl { get; set; }
+        public bool HasError { get; set; }
+        public List<string>? Errors { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using LinkUpApp.Core.Domain.Interfaces;
 
 namespace LinkUpApp.Core.Application.Services
 {
-    public class FrienshipService : GenericService<Friendship, FriendshipDto>, IFriendshipService
+    public class FrienshipService : GenericService<Friendship, FriendshipDto, SaveFriendshipDto>, IFriendshipService
     {
         private readonly IFriendshipRepository _repository;
         private readonly IAccountServiceWebApp _accountService;

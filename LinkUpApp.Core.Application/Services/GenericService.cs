@@ -4,8 +4,9 @@ using LinkUpApp.Infraesctructure.Persistence.Repositories;
 
 namespace LinkUpApp.Core.Application.Services
 {
-    public class GenericService<Entity, DtoModel> : IGenericService<DtoModel> where Entity : class
+    public class GenericService<Entity, DtoModel, SaveDtoModel> : IGenericService<DtoModel,SaveDtoModel> where Entity : class
         where DtoModel : class
+        where SaveDtoModel : class
     {
         private readonly IGenericRepository<Entity> _repository;
         private readonly IMapper _mapper;
@@ -16,7 +17,7 @@ namespace LinkUpApp.Core.Application.Services
             _repository = repository;
         }
 
-        public virtual async Task<DtoModel?> AddAsync(DtoModel dto)
+        public virtual async Task<SaveDtoModel?> AddAsync(SaveDtoModel dto)
         {
             try
             {
@@ -27,7 +28,7 @@ namespace LinkUpApp.Core.Application.Services
                     return null;
                 }
 
-                return _mapper.Map<DtoModel>(returnEntity);
+                return _mapper.Map<SaveDtoModel>(returnEntity);
             }
             catch (Exception)
             {
@@ -35,7 +36,7 @@ namespace LinkUpApp.Core.Application.Services
             }
         }
 
-        public virtual async Task<DtoModel?> UpdateAsync(DtoModel dto, int id)
+        public virtual async Task<SaveDtoModel?> UpdateAsync(SaveDtoModel dto, int id)
         {
             try
             {
@@ -46,7 +47,7 @@ namespace LinkUpApp.Core.Application.Services
                     return null;
                 }
 
-                return _mapper.Map<DtoModel>(returnEntity);
+                return _mapper.Map<SaveDtoModel>(returnEntity);
             }
             catch (Exception)
             {

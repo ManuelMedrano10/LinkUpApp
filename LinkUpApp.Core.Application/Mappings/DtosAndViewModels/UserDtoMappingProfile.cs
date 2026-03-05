@@ -10,12 +10,14 @@ namespace LinkUpApp.Core.Application.Mappings.DtosAndViewModels
         {
             CreateMap<UserDto, UpdateUserViewModel>()
                 .ForMember(dest => dest.ProfileImageFile, opt => opt.Ignore())
+                .ForMember(dest => dest.ProfileImageUrl, opt => opt.Ignore())
                 .ForMember(dest => dest.Password, opt => opt.Ignore())
-                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore());
+                .ForMember(dest => dest.ConfirmPassword, opt => opt.Ignore())
+                .ForMember(dest => dest.HasError, opt => opt.Ignore())
+                .ForMember(dest => dest.Errors, opt => opt.Ignore());
 
-            CreateMap<UpdateUserViewModel, SaveUserDto>()
-                .ForMember(dest => dest.UserName, opt => opt.Ignore())
-                .ForMember(dest => dest.Email, opt => opt.Ignore());
+            CreateMap<SaveUserDto, UpdateUserViewModel>()
+                .ForMember(dest => dest.ProfileImageUrl, opt => opt.MapFrom(src => src.ProfileImage));
         }
     }
 }

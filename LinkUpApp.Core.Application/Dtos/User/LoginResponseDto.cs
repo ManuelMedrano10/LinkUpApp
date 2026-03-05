@@ -1,6 +1,6 @@
 ﻿namespace LinkUpApp.Core.Application.Dtos.User
 {
-    public class LoginRequestDto
+    public class LoginResponseDto
     {
         public required string Id { get; set; }
         public required string Name { get; set; }

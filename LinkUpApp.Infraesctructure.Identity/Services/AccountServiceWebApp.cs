@@ -23,9 +23,9 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
             _emailService = emailService;
         }
 
-        public async Task<LoginRequestDto> AuthenticateAsync(LoginDto loginDto)
+        public async Task<LoginResponseDto> AuthenticateAsync(LoginDto loginDto)
         {
-            LoginRequestDto response = new()
+            LoginResponseDto response = new()
             {
                 Email = "",
                 Id = "",

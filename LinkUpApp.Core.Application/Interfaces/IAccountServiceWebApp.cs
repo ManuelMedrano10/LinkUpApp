@@ -4,7 +4,7 @@ namespace LinkUpApp.Core.Application.Interfaces
 {
     public interface IAccountServiceWebApp
     {
-        Task<LoginRequestDto> AuthenticateAsync(LoginDto loginDto);
+        Task<LoginResponseDto> AuthenticateAsync(LoginDto loginDto);
         Task<string> ConfirmAccountAsync(string userId, string token);
         Task<UserResponseDto> DeleteAsync(string id);
         Task<EditResponseDto> EditUser(SaveUserDto saveUserDto, string origin, bool? isCreated = false);

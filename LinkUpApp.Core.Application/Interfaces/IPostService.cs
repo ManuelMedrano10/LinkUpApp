@@ -7,5 +7,6 @@ namespace LinkUpApp.Core.Application.Interfaces
     {
         Task<List<PostDto>> GetAllByUserIdAsync(string userId);
         Task<List<PostDto>> GetAllFromFriendsAsync(string userId);
+        Task ToggleReactionAsync(int postId, string userId, bool isLike);
     }
 }

@@ -78,6 +78,33 @@ namespace LinkUpApp.Core.Application.Services
             return viewModels.OrderByDescending(x => x.CreatedAt).ToList();
         }
 
+        public async Task<string?> AddFriendRequestAsync(string senderId, string receiverId)
+        {
+            if (senderId == receiverId)
+                return "You cannot send a request to yourself.";
+
+            var allFriendships = await _repository.GetAllList();
+
+            bool alreadyExists = allFriendships.Any(f =>
+                (f.SenderUserId == senderId && f.ReceiverUserId == receiverId) ||
+                (f.SenderUserId == receiverId && f.ReceiverUserId == senderId));
+
+            if (alreadyExists)
+                return "There already is a request or frienship with this user.";
+
+            var newRequest = new Friendship
+            {
+                Id = 0,
+                SenderUserId = senderId,
+                ReceiverUserId = receiverId,
+                Status = FriendshipStatus.Pending,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _repository.AddAsync(newRequest);
+            return null;
+        }
+
         private async Task<List<FriendshipDto>> MapToDtoAndPopulateUser(List<Friendship> friendships, string currentUserId)
         {
             var viewModels = new List<FriendshipDto>();

@@ -11,5 +11,6 @@ namespace LinkUpApp.Core.Application.Interfaces
         Task AcceptRequestAsync(int friendshipId);
         Task RejectRequestAsync(int friendshipId);
         Task DeleteFriendAsync(int friendshipId);
+        Task<string?> AddFriendRequestAsync(string senderId, string receiverId)
     }
 }

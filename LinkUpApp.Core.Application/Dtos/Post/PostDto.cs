@@ -13,7 +13,8 @@ namespace LinkUpApp.Core.Application.Dtos.Post
         public required string UserName { get; set; }
         public required string UserPhotoUrl { get; set; }
         public int LikesCount { get; set; }
-        public bool IsLikedByCurrentUser { get; set; } 
+        public int DislikesCount { get; set; }
+        public bool? IsLikedByCurrentUser { get; set; } 
         public ICollection<CommentDto>? Comments { get; set; }
     }
 }

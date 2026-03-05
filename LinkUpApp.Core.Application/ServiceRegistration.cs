@@ -14,7 +14,8 @@ namespace LinkUpApp.Core.Application
             #endregion
             #region Services IOC
             services.AddScoped<IPostService, PostService>();
-            services.AddScoped<IFrienshipService, FrienshipService>();
+            services.AddScoped<IFriendshipService, FrienshipService>();
+            services.AddScoped<IUserService, UserService>();
             #endregion
         }
     }

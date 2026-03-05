@@ -5,7 +5,7 @@ namespace LinkUpApp.Core.Application.ViewModels.User
 {
     public class UpdateUserViewModel
     {
-        public required int Id { get; set; }
+        public required string Id { get; set; }
 
         [Required(ErrorMessage = "You must enter the name of the user.")]
         [DataType(DataType.Text)]

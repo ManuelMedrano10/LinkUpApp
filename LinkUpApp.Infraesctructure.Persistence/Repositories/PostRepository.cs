@@ -24,5 +24,4 @@ namespace LinkUpApp.Infraesctructure.Persistence.Repositories
                 .ToListAsync();
         }
     }
-    }
 }

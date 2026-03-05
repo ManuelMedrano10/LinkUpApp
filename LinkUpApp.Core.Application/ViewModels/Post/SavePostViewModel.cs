@@ -20,4 +20,4 @@ namespace LinkUpApp.Core.Application.ViewModels.Post
         public string? YoutubeUrl { get; set; }
     }
 }
-}
+

@@ -3,7 +3,7 @@ using LinkUpApp.Core.Application.ViewModels.Friendship;
 
 namespace LinkUpApp.Core.Application.Interfaces
 {
-    public interface IFrienshipService : IGenericService<FriendshipDto>
+    public interface IFriendshipService : IGenericService<FriendshipDto>
     {
         Task<List<FriendshipDto>> GetPendingRequestsAsync(string currentUserId);
         Task<List<FriendshipDto>> GetSentRequestsAsync(string currentUserId);

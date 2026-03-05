@@ -1,4 +1,6 @@
+using LinkUpApp.Core.Application;
 using LinkUpApp.Infraesctructure.Identity;
+using LinkUpApp.Infraesctructure.Persistence;
 using LinkUpApp.Infraesctructure.Shared;
 
 namespace LinkUpApp
@@ -14,6 +16,8 @@ namespace LinkUpApp
 
             builder.Services.AddSharedLayerIoc(builder.Configuration);
             builder.Services.AddIdentityLayerIocWebApp(builder.Configuration);
+            builder.Services.AddPersistenceLayerIoc(builder.Configuration);
+            builder.Services.AddApplicationLayerIoc();
 
             var app = builder.Build();
 

@@ -12,11 +12,13 @@ namespace LinkUpApp.Controllers
     {
         private readonly IFriendshipService _friendshipService;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public FriendshipController(IFriendshipService friendshipService, IMapper mapper)
+        public FriendshipController(IFriendshipService friendshipService, IMapper mapper, IUserService userService)
         {
             _friendshipService = friendshipService;
             _mapper = mapper;
+            _userService = userService;
         }
 
         private string GetUserId()
@@ -41,9 +43,15 @@ namespace LinkUpApp.Controllers
         [HttpPost]
         public async Task<IActionResult> SendRequest(string receiverUsername)
         {
-            string receiverId = receiverUsername;
+            /*string receiverId = await _userService.GetUserIdByUsernameAsync(receiverUsername);
 
-            var errorMessage = await _friendshipService.AddFriendRequestAsync(GetUserId(), receiverId);
+            if (string.IsNullOrEmpty(receiverId))
+            {
+                TempData["ErrorFriendship"] = $"The user '{receiverUsername}' does not exist.";
+                return RedirectToRoute(new { action = "Index", controller = "Friendship" });
+            }*/
+
+            var errorMessage = await _friendshipService.AddFriendRequestAsync(GetUserId(), receiverUsername);
 
             if (errorMessage != null)
             {
@@ -54,7 +62,7 @@ namespace LinkUpApp.Controllers
                 TempData["SuccessFriendship"] = "Friendship request sended successfully.";
             }
 
-            return RedirectToRoute(new { action = "Index", controller = "Home" });
+            return RedirectToRoute(new { action = "Index", controller = "Friendship" });
         }
 
         [HttpPost]

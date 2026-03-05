@@ -1,0 +1,65 @@
+﻿@model IEnumerable<GameHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Historial de Battleship";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-crosshair text-danger"></i> Mis Partidas de Battleship</h2>
+        <a asp-controller="Friendship" asp-action="Index" class="btn btn-primary fw-bold">
+            <i class="bi bi-plus-lg"></i> Nueva Partida
+        </a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var game in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">vs @game.OpponentName</h5>
+                            <p class="text-muted small mb-3">Iniciada: @game.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")</p>
+
+                            <div class="mb-3">
+                                @if (game.Status == 1)
+                                {
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-gear-fill"></i> Configurando Flotas</span>
+                                }
+                                else if (game.Status == 2)
+                                {
+                                    <span class="badge bg-primary"><i class="bi bi-joystick"></i> Batalla en Curso</span>
+                                }
+                                else if (game.Status == 3)
+                                {
+                                    if (game.IsWinner)
+                                    {
+                                        <span class="badge bg-success"><i class="bi bi-trophy-fill"></i> ¡Victoria!</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger"><i class="bi bi-skull-fill"></i> Derrota</span>
+                                    }
+                                }
+                            </div>
+
+                            <a asp-controller="Battleship" asp-action="Play" asp-route-id="@game.GameId" class="btn btn-outline-dark btn-sm w-100 fw-bold">
+                                @(game.Status == 3 ? "Ver Resultado" : "Continuar Partida")
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center text-muted mt-5 py-5 bg-white rounded shadow-sm">
+            <i class="bi bi-controller fs-1"></i>
+            <p class="mt-3 fs-5">Aún no has jugado ninguna partida de Battleship.</p>
+            <a asp-controller="Friendship" asp-action="Index" class="btn btn-warning mt-2 fw-bold">Reta a un amigo ahora</a>
+        </div>
+    }
+</div>

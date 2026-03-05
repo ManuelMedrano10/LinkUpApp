@@ -2,7 +2,7 @@
 {
     public static class FileManager
     {
-        public static string? Upload(IFormFile? file, string id, string folderName, bool isEditMode = false, string? imagePath = "")
+        public static string? Upload(IFormFile file, string id, string folderName, bool isEditMode = false, string? imagePath = "")
         {
             if (isEditMode && file == null)
             {
@@ -14,7 +14,7 @@
                 return string.Empty;
             }
 
-            string basePath = $"Images/{folderName}/{id}";
+            string basePath = $"/Images/{folderName}/{id}";
             string path = Path.Combine(Directory.GetCurrentDirectory(), $"wwwroot/{basePath}");
 
             if (!Directory.Exists(path))

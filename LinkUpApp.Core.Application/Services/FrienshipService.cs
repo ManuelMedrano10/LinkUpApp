@@ -78,8 +78,15 @@ namespace LinkUpApp.Core.Application.Services
             return viewModels.OrderByDescending(x => x.CreatedAt).ToList();
         }
 
-        public async Task<string?> AddFriendRequestAsync(string senderId, string receiverId)
+        public async Task<string?> AddFriendRequestAsync(string senderId, string receiverUsername)
         {
+            var receiverUser = await _accountService.GetUserByUserName(receiverUsername);
+
+            if (receiverUser == null)
+                return $"The user '{receiverUsername}' does not exist.";
+
+            string receiverId = receiverUser.Id;
+
             if (senderId == receiverId)
                 return "You cannot send a request to yourself.";
 

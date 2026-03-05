@@ -13,6 +13,7 @@ namespace LinkUpApp.Core.Application.Interfaces
         Task<UserDto?> GetUserByEmail(string email);
         Task<UserDto?> GetUserById(string id);
         Task<UserDto?> GetUserByUserName(string userName);
+        Task<string?> GetUserIdByUsernameAsync(string username);
         Task<RegisterResponseDto> RegisterUser(SaveUserDto saveUserDto, string origin);
         Task<UserResponseDto> ResetPasswordAsync(ResetPasswordRequestDto request);
         Task SignOutAsync();

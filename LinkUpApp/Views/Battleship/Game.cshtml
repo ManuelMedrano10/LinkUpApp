@@ -1,0 +1,133 @@
+﻿@model GameViewModel
+
+@{
+    ViewData["Title"] = "Battleship";
+}
+
+<div class="container mt-4">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-uppercase"><i class="bi bi-crosshair text-danger"></i> Battleship</h2>
+        <h5 class="text-muted">Tú vs @Model.OpponentName</h5>
+        @if (Model.Status == 2)
+        {
+            <form asp-controller="Battleship" asp-action="Surrender" method="post" class="mt-2">
+                <input type="hidden" name="id" value="@Model.GameId" />
+                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3" onclick="return confirm('¿Estás seguro de que deseas rendirte y darle la victoria al oponente?');">
+                    <i class="bi bi-flag-fill"></i> Rendirse
+                </button>
+            </form>
+        }
+
+        @if (Model.Status == 3)
+        {
+            <div class="alert alert-success mt-3 fs-4 fw-bold">
+                ¡Juego Terminado!
+                @(Model.WinnerId == Model.CurrentUserId ? "¡Felicidades, ganaste la batalla!" : $"El ganador es {Model.OpponentName}")
+            </div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-2">Volver al Inicio</a>
+        }
+        else if (Model.Status == 1)
+        {
+            <div class="alert alert-warning mt-3 fw-bold">
+                <i class="bi bi-hourglass-split"></i> Esperando a que @Model.OpponentName coloque sus barcos...
+            </div>
+        }
+        else
+        {
+            <div class="alert @(Model.IsMyTurn ? "alert-success" : "alert-secondary") mt-3 fs-5 fw-bold" id="turnIndicator">
+                @(Model.IsMyTurn ? "¡Es tu turno de disparar!" : $"Esperando el movimiento de {Model.OpponentName}...")
+            </div>
+        }
+    </div>
+
+    <div class="row justify-content-center gap-5">
+        <div class="col-md-5 text-center">
+            <h4 class="mb-3"><i class="bi bi-shield-shaded text-primary"></i> Mi Flota</h4>
+            <div class="d-inline-block border border-dark p-2 bg-light shadow rounded">
+                @for (int r = 0; r < 12; r++)
+                {
+                    <div class="d-flex">
+                        @for (int c = 0; c < 12; c++)
+                        {
+                            var cell = Model.MyBoard.Grid[r, c];
+                            <div class="border border-secondary @cell.CssClass"
+                                 style="width: 35px; height: 35px;">
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-5 text-center">
+            <h4 class="mb-3"><i class="bi bi-crosshair2 text-danger"></i> Radar Enemigo</h4>
+            <div class="d-inline-block border border-dark p-2 bg-light shadow rounded @(Model.IsMyTurn && Model.Status == 2 ? "" : "opacity-50")">
+                @for (int r = 0; r < 12; r++)
+                {
+                    <div class="d-flex">
+                        @for (int c = 0; c < 12; c++)
+                        {
+                            var cell = Model.OpponentBoard.Grid[r, c];
+                            bool canClick = Model.IsMyTurn && Model.Status == 2 && !cell.IsHit;
+
+                            <div class="border border-secondary @cell.CssClass"
+                                 style="width: 35px; height: 35px; @(canClick ? "cursor: crosshair;" : "cursor: not-allowed;")"
+                                 onclick="@(canClick ? $"shoot({r}, {c})" : "")"
+                                 onmouseover="@(canClick ? "this.style.backgroundColor='#ffc107'" : "")"
+                                 onmouseout="@(canClick ? "this.style.backgroundColor=''" : "")">
+
+                                @if (cell.IsHit && cell.HasShip)
+                                {
+                                    <i class="bi bi-fire text-warning" style="font-size: 1.2rem; line-height: 35px;"></i>
+                                }
+                                else if (cell.IsHit && !cell.HasShip)
+                                {
+                                    <i class="bi bi-water text-primary" style="font-size: 1.2rem; line-height: 35px;"></i>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <p id="shootError" class="text-danger fw-bold mt-2"></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const gameId = @Model.GameId;
+        const isMyTurn = @Model.IsMyTurn.ToString().ToLower();
+        const status = @Model.Status;
+
+        function shoot(r, c) {
+            if (!isMyTurn || status !== 2) return;
+
+            fetch(`/Battleship/Shoot`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    gameId: gameId,
+                    row: r,
+                    col: c
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    document.getElementById('shootError').innerText = data.message;
+                }
+            });
+        }
+
+        if ((!isMyTurn && status === 2) || status === 1) {
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000);
+        }
+    </script>
+}

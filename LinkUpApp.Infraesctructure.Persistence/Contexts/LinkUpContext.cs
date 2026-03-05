@@ -13,6 +13,9 @@ namespace LinkUpApp.Infraesctructure.Persistence.Contexts
         public DbSet<Reaction> Reactions { get; set; }
         public DbSet<Reply> Replies { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<Shot> Shots { get; set; }
+        public DbSet<ShipPosition> Ships { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -4,6 +4,7 @@ using LinkUpApp.Infraesctructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LinkUpApp.Infraesctructure.Persistence.Migrations
 {
     [DbContext(typeof(LinkUpContext))]
-    partial class LinkUpContextModelSnapshot : ModelSnapshot
+    [Migration("20260305114317_AddedBattleShipAndAllClasesRelated")]
+    partial class AddedBattleShipAndAllClasesRelated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

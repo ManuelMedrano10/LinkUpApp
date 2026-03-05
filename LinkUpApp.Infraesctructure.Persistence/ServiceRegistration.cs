@@ -40,6 +40,9 @@ namespace LinkUpApp.Infraesctructure.Persistence
                 services.AddScoped<IReactionRepository, ReactionRepository>();
                 services.AddScoped<IReplyRepository, ReplyRepository>();
                 services.AddScoped<ICommentRepository, CommentRepository>();
+                services.AddScoped<IGameRepository, GameRepository>();
+                services.AddScoped<IShipPositionRepository, ShipPositionRepository>();
+                services.AddScoped<IShotRepository, ShotRepository>();
                 #endregion
             }
         }

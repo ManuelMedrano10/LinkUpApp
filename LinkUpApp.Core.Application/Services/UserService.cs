@@ -61,5 +61,10 @@ namespace LinkUpApp.Core.Application.Services
 
             return await _accountService.EditUser(saveDto, origin, false);
         }
+
+        public async Task<string?> GetUserIdByUsernameAsync(string username)
+        {
+            return await _accountService.GetUserIdByUsernameAsync(username);
+        }
     }
 }

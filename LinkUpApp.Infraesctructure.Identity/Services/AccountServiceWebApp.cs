@@ -462,6 +462,12 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
             }
         }
 
+        public async Task<string?> GetUserIdByUsernameAsync(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            return user?.Id;
+        }
+
         #region Private Methods
         private async Task<string> GetVerificationUri(AppUser user, string origin)
         {
@@ -486,6 +492,8 @@ namespace LinkUpApp.Infraesctructure.Identity.Services
 
             return resetUri;
         }
+
+        
         #endregion
     }
 }

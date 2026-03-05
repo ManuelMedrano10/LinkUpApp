@@ -1,0 +1,130 @@
+﻿@model GameViewModel
+
+@{
+    ViewData["Title"] = "Posicionar Flota";
+}
+
+<div class="container mt-4 text-center">
+    <h2 class="fw-bold mb-3"><i class="bi bi-geo-alt-fill text-primary"></i> Ubica tus Barcos</h2>
+    <p class="text-muted">Haz clic en el tablero para colocar tus barcos. Tienes 5 barcos disponibles.</p>
+
+    <div class="d-flex justify-content-center mb-3 gap-3">
+        <button id="btnRotate" class="btn btn-outline-dark fw-bold">
+            <i class="bi bi-arrow-repeat"></i> Orientación: <span id="orientationText">Horizontal</span>
+        </button>
+        <span class="align-self-center badge bg-secondary fs-6">Barco actual: Tamaño <span id="currentShipSize">5</span></span>
+    </div>
+
+    <div class="d-inline-block border border-dark p-2 bg-light shadow rounded">
+        @for (int r = 0; r < 12; r++)
+        {
+            <div class="d-flex">
+                @for (int c = 0; c < 12; c++)
+                {
+                    <div class="border border-secondary bg-primary opacity-25"
+                         style="width: 40px; height: 40px; cursor: pointer;"
+                         data-row="@r" data-col="@c"
+                         onclick="placeShip(@r, @c)"
+                         onmouseover="hoverShip(this, @r, @c, true)"
+                         onmouseout="hoverShip(this, @r, @c, false)">
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="mt-4">
+        <button id="btnReady" class="btn btn-success btn-lg px-5 fw-bold" style="display: none;" onclick="sendSetup()">¡Estoy Listo!</button>
+        <p id="errorText" class="text-danger mt-2 fw-bold"></p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const gameId = @Model.GameId;
+        const requiredShips = [5, 4, 3, 3, 2];
+        let placedShips = [];
+        let isHorizontal = true;
+        let currentShipIndex = 0;
+
+        document.getElementById('btnRotate').addEventListener('click', () => {
+            isHorizontal = !isHorizontal;
+            document.getElementById('orientationText').innerText = isHorizontal ? "Horizontal" : "Vertical";
+        });
+
+        function hoverShip(element, r, c, isHover) {
+            if (currentShipIndex >= requiredShips.length) return;
+            let size = requiredShips[currentShipIndex];
+
+            for (let i = 0; i < size; i++) {
+                let targetR = isHorizontal ? r : r + i;
+                let targetC = isHorizontal ? c + i : c;
+
+                if (targetR < 12 && targetC < 12) {
+                    let cell = document.querySelector(`[data-row='${targetR}'][data-col='${targetC}']`);
+                    if (cell && !cell.classList.contains('bg-dark')) {
+                        cell.style.backgroundColor = isHover ? '#808080' : '';
+                    }
+                }
+            }
+        }
+
+        function placeShip(r, c) {
+            if (currentShipIndex >= requiredShips.length) return;
+
+            let size = requiredShips[currentShipIndex];
+
+            if (isHorizontal && c + size > 12) { showError("El barco se sale del tablero."); return; }
+            if (!isHorizontal && r + size > 12) { showError("El barco se sale del tablero."); return; }
+
+            for (let i = 0; i < size; i++) {
+                let targetR = isHorizontal ? r : r + i;
+                let targetC = isHorizontal ? c + i : c;
+                let cell = document.querySelector(`[data-row='${targetR}'][data-col='${targetC}']`);
+                if (cell.classList.contains('bg-dark')) {
+                    showError("Ya hay un barco en esa posición.");
+                    return;
+                }
+            }
+
+            for (let i = 0; i < size; i++) {
+                let targetR = isHorizontal ? r : r + i;
+                let targetC = isHorizontal ? c + i : c;
+                let cell = document.querySelector(`[data-row='${targetR}'][data-col='${targetC}']`);
+                cell.classList.remove('bg-primary', 'opacity-25');
+                cell.classList.add('bg-dark');
+            }
+
+            placedShips.push({ size: size, isHorizontal: isHorizontal, startRow: r, startCol: c });
+            currentShipIndex++;
+            showError("");
+
+            if (currentShipIndex < requiredShips.length) {
+                document.getElementById('currentShipSize').innerText = requiredShips[currentShipIndex];
+            } else {
+                document.getElementById('currentShipSize').innerText = "Todos colocados";
+                document.getElementById('btnReady').style.display = 'inline-block';
+            }
+        }
+
+        function showError(msg) {
+            document.getElementById('errorText').innerText = msg;
+        }
+
+        function sendSetup() {
+            fetch('/Battleship/SetupBoard', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ gameId: gameId, ships: placedShips })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    showError(data.message);
+                }
+            });
+        }
+    </script>
+}

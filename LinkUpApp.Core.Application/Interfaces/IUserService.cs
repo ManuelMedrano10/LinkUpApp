@@ -7,5 +7,6 @@ namespace LinkUpApp.Core.Application.Interfaces
     {
         Task<UpdateUserViewModel?> GetUserForEditAsync(string userId);
         Task<EditResponseDto> UpdateProfileAsync(SaveUserDto vm, string origin);
+        Task<string?> GetUserIdByUsernameAsync(string username);
     }
 }
